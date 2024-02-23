@@ -1,93 +1,110 @@
 #include <iostream>
-#include <cstdlib>
-#include <cstring>
+#include <string>
+#include <cstdlib> // for generating random IDs
+#include <ctime> // for seeding random number generator
 
 using namespace std;
 
-class Polygon {
-    private:
-        float width;
-        float height;
-        float radius;
-        float side;
-        float base;
-        float length;
-        float result;
+//Parent class LibraryItem
+
+class LibraryItem {
+    protected:
+        string title;
+        int ID;
+        string journalTitle;
     public:
-        float calculateAreaCircle(float r){
-            const float pi = 3.142;
-            radius = r;
-            result = pi * r * r;
-            return result;
+        LibraryItem() {
+            ID = rand(); //to generate a random ID
         }
-        float calculateAreaSquare(float s){
-            side = s;
-            result = s * s;
-            return result;
+    virtual void display() const {
+        cout << "ID: " << ID << endl;
+    }
+};
+
+class Book : public LibraryItem {
+    private:
+        string author;
+        int year;
+    public:
+        Book(string t, string a, int y) {
+            title = t;
+            author = a;
+            year = y;
         }
-        float calculateAreaRectangle(float l, float w){
-            length = l;
-            width = w;
-            result = l * w;
-            return result;
+
+        void display() const override {
+            LibraryItem :: display();
+            cout << "Title: " << title << endl;
+            cout << "Author: " << author << ", Year: " << year << endl;
         }
 };
 
-float calculateCircle(){
-    Polygon circle;
-    float radius;
-    cout << "Enter radius: ";
-    cin >> radius;
-    cout << "Area of circle: " << circle.calculateAreaCircle(radius) << endl;
-    return 0;
-}
+class Journal : public LibraryItem {
+    private:
+        int volume;
+        string journalTitle;
+    public:
+        Journal(string t, int v) {
+            journalTitle = t;
+            volume = v;
+        }
 
-float calculateSquare(){
-    Polygon square;
-    float side;
-    cout << "Enter side: ";
-    cin >> side;
-    cout << "Area of square: " << square.calculateAreaSquare(side) << endl;
-    return 0;
-}
+        void display() const override {
+            LibraryItem::display();
+            cout << "Title: " << journalTitle << endl;
+            cout << "Volume: " << volume << endl;
+        }
+};
 
-float calculateRectangle(){
-    Polygon rectangle;
-    float length;
-    float width;
-    cout << "Enter length: ";
-    cin >> length;
-    cout << "Enter width: ";
-    cin >> width;
-    cout << "Area of rectangle: " << rectangle.calculateAreaRectangle(length, width) << endl;
-    return 0;
-}
+class LibraryManager {
+    public:
+        static void checkOut(LibraryItem& item) {
+            cout << "Checking out item: ";
+            item.display();
+        }
+        static void checkIn(LibraryItem& item) {
+            cout << "Checking in item: ";
+            item.display();
+        }
+};
 
 int main() {
+
+    string title, author, journalTitle;
+    int year, volume;
     int choice;
-
-    cout << "-------------------------------" << endl;
-    cout << "|   Menu Choice               |" << endl;
-    cout << "|-----------------------------|" << endl;
-    cout << "|1. Circle                    |" << endl;
-    cout << "|2. Rectangle                 |" << endl;
-    cout << "|3. Square                    |" << endl;
+    //seed the random number generator
+    srand(time(NULL));
+    // prompt the user for the information
+    cout << "Do you want a book or journal? "<< endl;
+    cout << "1. Book" << endl;
+    cout << "2. Journal" << endl;
+    cout << "3. Exit" << endl;
     cin >> choice;
-    cout << "|-----------------------------|" << endl;
 
-    switch (choice) {
-        case 1:
-            calculateCircle();
-            break;
-        case 2:
-            calculateRectangle();
-            break;
-        case 3:
-            calculateSquare();
-            break;
-        default:
-            cout << "Invalid entry";
-            break;
-    }
+    if (choice == 1) {
+            cout << "Enter the title of the book: ";
+            cin.ignore();
+            getline(cin, title);
+            cout << "Enter the author of the book: ";
+            getline(cin, author);
+            cout << "Enter the year of publication: ";
+            cin >> year;
+
+            Book book1(title, author, year);
+            LibraryManager::checkIn(book1);
+        } else if (choice == 2) {   
+            cout << "Enter the title of the journal: ";
+            cin.ignore();//ignore the newling character left in the buffer
+            getline(cin, journalTitle);
+            cout << "Enter the volume number of the journal: ";
+            cin >> volume;
+
+            Journal journal1(journalTitle, volume);
+            LibraryManager::checkIn(journal1);
+        } else if (choice == 3) {
+            cout << "Thankyou for accessing this library";
+            return 0;
+        }    
     return 0;
 }
