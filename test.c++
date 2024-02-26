@@ -22,11 +22,11 @@ public:
 
         int ans = 0;
 
-        for(int i = 0; i < s.length(); i++){
-            if(m[s[i]] < m[s[i+1]]){
-                ans -= m[s[i]];
-            } else {
-                ans += m[s[i]];
+        for(int i = 0; i < s.length(); i++){  //CDLVII
+            if(m[s[i]] < m[s[i+1]]){   
+                ans -= m[s[i]];  
+            } else {                 
+                ans += m[s[i]]; 
             }
         }
         return ans;

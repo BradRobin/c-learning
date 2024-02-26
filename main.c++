@@ -111,7 +111,7 @@ string convert(int number){
 
         return result;
     } else {
-        return "Number is larger than 100";
+        return "Number is larger than 1000";
     }
 }
 
