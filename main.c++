@@ -1,51 +1,53 @@
+// write a program that will take this string "aefzmdbmctabcetfdz" 
+// then re arrange the string to a string that has pairs of equivalents
+// example "mmttaaffcceeddbbzz"
+
 #include <iostream>
 #include <string>
-#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
-bool askQuestion(const string& question, const string& correctAnswer, int& score, int& lives) {
-    string userAnswer;
-    while (true) {
-        cout << question;
-        cin >> userAnswer;
+string rearrangePairs(const string& input) {
+    unordered_map<char, int> charCount;
 
-        // Make a copy of the user's answer and correct answer in lowercase
-        string userAnswerLower = userAnswer;
-        string correctAnswerLower = correctAnswer;
-        transform(userAnswerLower.begin(), userAnswerLower.end(), userAnswerLower.begin(), ::tolower);
-        transform(correctAnswerLower.begin(), correctAnswerLower.end(), correctAnswerLower.begin(), ::tolower);
+    // Count the occurrences of each character
+    for (char ch : input) {
+        charCount[ch]++;
+    }
 
-        if (userAnswerLower == correctAnswerLower) {
-            cout << "Correct! You gained 5 points." << endl;
-            score += 5;
-            return true;
-        } else {
-            lives--;
-            cout << "Wrong answer. You have " << lives << " lives left." << endl;
-            if (lives == 0) {
-                return false;
-            }
-            cout << "Try again." << endl;
+    string rearrangedString;
+
+    // Iterate through the character counts and add characters to the output string
+    for (auto& pair : charCount) {
+        char ch = pair.first;
+        int count = pair.second;
+
+        // Add pairs of characters to the output string
+        for (int i = 0; i < count / 2; ++i) {
+            rearrangedString += ch;
+            rearrangedString += ch;
+        }
+
+        // If there's an odd count, add one more character to maintain pairs
+        if (count % 2 == 1) {
+            rearrangedString += ch;
         }
     }
+
+    return rearrangedString;
 }
 
 int main() {
-    int score = 0;
-    int lives = 3;
+    string input;
+    cout << "Enter the string to be rearranged: ";
+    cin >> input;
 
-    if (askQuestion("Question 1: What is the capital of Kenya: ", "Nairobi", score, lives) &&
-        askQuestion("Question 2: What is the capital of China: ", "Beijing", score, lives) &&
-        askQuestion("Question 3: What is the capital of Canada: ", "Ottawa", score, lives) &&
-        askQuestion("Question 4: What is the capital of Russia: ", "Moscow", score, lives) &&
-        askQuestion("Question 5: What is the capital of Madagascar: ", "Antananarivo", score, lives)) {
-        cout << "You've answered all questions correctly!" << endl;
-    } else {
-        cout << "Out of Lives! Game Over!" << endl;
-    }
-
-    cout << "Your final score is: " << score << endl;
+    string rearranged = rearrangePairs(input);
+    
+    cout << "Original string: " << input << endl;
+    cout << "Rearranged string: " << rearranged << endl;
 
     return 0;
 }
+
