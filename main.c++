@@ -13,26 +13,22 @@ string rearrangePairs(const string& input) {
 
     // Count the occurrences of each character
     for (char ch : input) {
-        charCount[ch]++;
+        charCount[ch]++;      
     }
 
     string rearrangedString;
 
     // Iterate through the character counts and add characters to the output string
     for (auto& pair : charCount) {
-        char ch = pair.first;
+        char ch = pair.first;          //abcddbcaabcdd
         int count = pair.second;
 
         // Add pairs of characters to the output string
-        for (int i = 0; i < count / 2; ++i) {
-            rearrangedString += ch;
-            rearrangedString += ch;
+        for (int i = 0; i < count / 2; ++i) {    
+            rearrangedString += ch;             
+            rearrangedString += ch;   //ddddccccbbbbaaaa
         }
 
-        // If there's an odd count, add one more character to maintain pairs
-        if (count % 2 == 1) {
-            rearrangedString += ch;
-        }
     }
 
     return rearrangedString;
