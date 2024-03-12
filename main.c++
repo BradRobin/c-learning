@@ -7,11 +7,11 @@ class Solution {
 public:
     int maxFrequencyElements(vector<int>& nums) {
         std::unordered_map<int, int> freqCounter;
-        for (int num : nums) {
+        for (int num : nums) {  //loop iterate through nums array allocate the pairs
             freqCounter[num]++;
         }
         int maxFrequency = 0;
-        for (const auto& entry : freqCounter) {
+        for (const auto& entry : freqCounter) {  // {1, 2, 2, 3}   1:1 2:2 3:2
             maxFrequency = std::max(maxFrequency, entry.second);
         }
         int maxFreqElements = 0;
